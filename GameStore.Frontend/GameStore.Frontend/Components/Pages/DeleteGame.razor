@@ -1,0 +1,57 @@
+﻿@rendermode InteractiveServer
+
+@inject GamesClient GamesClient
+@inject NavigationManager NavigationManager
+
+<!-- Modal -->
+<div class="modal fade" id="@GetModalId(Game)" tabindex="-1" aria-labelledby="deleteGameModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h1 class="modal-title fs-5" id="deleteGameModalLabel">@title</h1>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                <button 
+                    @onclick="@HandleDeleteAsync" 
+                    type="button" 
+                    class="btn btn-danger" 
+                    data-bs-dismiss="modal">Delete</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+@code {
+    [Parameter]
+    public GameSummary? Game { get; set; }
+
+    private string title = string.Empty;
+
+    private async Task HandleDeleteAsync()
+    {
+        // ArgumentNullException.ThrowIfNull(Game);
+        // GamesClient.DeleteGame(Game);
+
+        // GamesClient.DeleteGame(Game!.Id); // ! is nulll forgiving as we know here modal will be opened only when Game is present
+
+        await GamesClient.DeleteGameAsync(Game!.Id);
+
+        NavigationManager.Refresh();
+    }
+
+    protected override void OnParametersSet()
+    {
+
+        title = $"Delete {Game?.Name}";
+        
+    }
+
+    public static string GetModalId(GameSummary? game)
+    {
+        ArgumentNullException.ThrowIfNull(game);
+        return $"deleteModal-{game.Id}";
+    }
+}

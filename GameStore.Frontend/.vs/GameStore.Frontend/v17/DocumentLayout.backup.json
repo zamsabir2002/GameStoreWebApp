@@ -1,0 +1,37 @@
+{
+  "Version": 1,
+  "WorkspaceRootPath": "C:\\Users\\zsabir\\source\\repos\\GameStore.Frontend\\",
+  "Documents": [
+    {
+      "AbsoluteMoniker": "D:0:0:{47C6C83F-E64B-4404-879A-8B7A87E796DE}|GameStore.Frontend\\GameStore.Frontend.csproj|c:\\users\\zsabir\\source\\repos\\gamestore.frontend\\gamestore.frontend\\components\\pages\\home.razor||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{47C6C83F-E64B-4404-879A-8B7A87E796DE}|GameStore.Frontend\\GameStore.Frontend.csproj|solutionrelative:gamestore.frontend\\components\\pages\\home.razor||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    }
+  ],
+  "DocumentGroupContainers": [
+    {
+      "Orientation": 0,
+      "VerticalTabListWidth": 256,
+      "DocumentGroups": [
+        {
+          "DockedWidth": 200,
+          "SelectedChildIndex": 0,
+          "Children": [
+            {
+              "$type": "Document",
+              "DocumentIndex": 0,
+              "Title": "Home.razor",
+              "DocumentMoniker": "C:\\Users\\zsabir\\source\\repos\\GameStore.Frontend\\GameStore.Frontend\\Components\\Pages\\Home.razor",
+              "RelativeDocumentMoniker": "GameStore.Frontend\\Components\\Pages\\Home.razor",
+              "ToolTip": "C:\\Users\\zsabir\\source\\repos\\GameStore.Frontend\\GameStore.Frontend\\Components\\Pages\\Home.razor",
+              "RelativeToolTip": "GameStore.Frontend\\Components\\Pages\\Home.razor",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAA0AAAAKAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2024-10-08T08:31:08.449Z",
+              "EditorCaption": ""
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

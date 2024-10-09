@@ -1,0 +1,134 @@
+﻿@page "/editgame"
+@page "/editgame/{id:int}"
+@rendermode InteractiveServer
+
+@inject NavigationManager NavigationManager
+@inject GamesClient GamesClient
+@inject GenreClient GenreClient
+
+<PageTitle>New Game</PageTitle>
+
+<h3>@title</h3>
+
+@if (genres is null || game is null)
+{
+    <p><em>Loading...</em></p>
+}
+else
+{
+    <div class="row">
+        <div class="col-md-4">
+
+            <EditForm 
+                Model="@game" 
+                FormName="CreateGame" 
+                OnValidSubmit="HandleSubmitAsync"
+                Enhance
+            >
+                <DataAnnotationsValidator />
+                <ValidationSummary />
+                <div class="mb-3">
+                    <label for="name" class="form-label">Name</label>
+                    <InputText class="form-control" id="name" @bind-Value="game.Name" />
+                    <ValidationMessage For="() => game.Name" />
+                </div>
+                <div class="mb-3">
+                    <label for="genre" class="form-label">Genre</label>
+                    <InputSelect id="genre" @bind-Value="game.GenreId" class="form-select">
+                        <option value="">Select a Genre</option>
+                        @foreach (var genre in genres)
+                        {
+                            <option value="@genre.Id">@genre.Name</option>
+                        }
+                    </InputSelect>
+                    <ValidationMessage For="() => game.GenreId" />
+
+                </div>
+                <div class="mb-3">
+                    <label for="price" class="form-label">Price</label>
+                    <InputNumber class="form-control" id="price" @bind-Value="game.Price" />
+                    <ValidationMessage For="() => game.Price" />
+                </div>
+                <div class="mb-3">
+                    <label for="releaseDate" class="form-label">Release Date</label>
+                    <InputDate class="form-control" id="releaseDate" @bind-Value="game.ReleaseDate" />
+                </div>
+                <button type="submit" class="btn btn-primary">Save</button>
+                <a role="button" class="btn btn-secondary" href="/">Cancel</a>
+            </EditForm>
+
+        </div>
+    </div>
+}
+
+
+@code {
+    [Parameter]
+    public int? Id { get; set; }
+
+    [SupplyParameterFromForm]
+    // game instances bounded to form
+    private GameDetails? game { get; set; }
+
+    // private GenreClient genreClient = new(); // removing this and injecting
+
+    // injected
+    // private GamesClient gamesClient = new();
+
+    private Genre[]? genres;
+    private string title = string.Empty;
+
+    protected override async Task OnParametersSetAsync()
+    {
+        if (game is not null)
+        {
+            // User has created or edited the object 
+            // that's why it is already populated
+            return; // break the function on this case
+        }
+
+        // OnParameterSet is also called after UserSubmits the Form hence
+        // when submit is called this function runs again and destroys 
+        // the whole user edited/created game by doing the blow actions
+        // Hence above handling is required
+        if (Id is not null)
+        {
+            game = await GamesClient.GetGameAsync(Id.Value);
+            title = $"Edit {game.Name}";
+        }
+        else
+        {
+            game = new()
+            {
+                Name = string.Empty,
+                ReleaseDate = DateOnly.FromDateTime(DateTime.UtcNow)
+            };
+            title = "New Game";
+        }
+    }
+
+    protected override async Task OnInitializedAsync()
+    {
+        // genres = genreClient.GetGenres();
+        // genres = GenreClient.GetGenres();
+        genres = await GenreClient.GetGenresAsync();
+    }
+
+    private async Task HandleSubmitAsync()
+    {
+        // gamesClient.AddGame(game); // instantiated through new
+        ArgumentNullException.ThrowIfNull(game);
+
+        if (Id is not null)
+        {
+            game.Id = Id.Value;
+            await GamesClient.UpdateGameAsync(game);
+        }
+        else
+        {
+            await GamesClient.AddGameAsync(game); // Games Client injected
+        }
+
+        NavigationManager.NavigateTo("/");
+    }
+}
